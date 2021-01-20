@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -11,7 +13,7 @@ public class PacketPacker {
 
     public PacketPacker() { //allocateDirect()의 경우 커널버퍼에 직접 접근가능하다.
         // TODO Auto-generated constructor stub
-        buffer = ByteBuffer.allocate(bufferSize); //할당
+        buffer = ByteBuffer.allocate(bufferSize); //현재 임의로 할당
         buffer.clear();
     }
 
@@ -34,7 +36,8 @@ public class PacketPacker {
             data = buffer.array();
         } // 데이터 안에 쌓인 버퍼 입력됨.
 
-        byte[] result = new byte[offset]; //복사 대상 할당 공간 확보
+        byte[] result = new byte[offset];
+        //받은 데이터 값만큼 offset만큼 byte 할당, 값을 2곳에 복사하고 있는 것.
 
         System.arraycopy(data, 0, result, 0, offset); // offset만큼 복사한다
 
@@ -44,6 +47,22 @@ public class PacketPacker {
         buffer.flip();  //buffer의 포지션을 0으로 이동
         return result;
     }
+
+    public void Finish_sendPacket(OutputStream os) throws IOException {
+
+        offset = buffer.position(); // 마지막 포인터 위치 offset 기억
+        byte[] data = {};
+
+        if(buffer.hasArray()){ // 따로 array 를 반환하는 함수 만들기.
+            data = buffer.array();
+        } // 데이터 안에 쌓인 버퍼 입력됨
+
+        os.write(data);
+        os.flush();
+        buffer.flip();  //buffer의 포지션을 0으로 이동
+
+    }
+
 
     public void SetPacketType(byte PacketType){
         buffer.put(PacketType);

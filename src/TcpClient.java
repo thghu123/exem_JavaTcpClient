@@ -32,18 +32,22 @@ public class TcpClient {
 
             // ===4byte Int 2개, 8 byte Long 4개===
             while(true){
-                PacketPacker msg = new PacketPacker(); //패킷을 포장해주는 프로그램
+
+                PacketPacker msg = new PacketPacker();
+
                 System.out.println("1: NumPacket, 2:StrPacket, 3: exit");
                 sc = new Scanner(System.in);
                 int input = sc.nextInt();
 
                 if(input == 1){
+
                     msg.SetPacketType(PacketType.INT2LONG4); // PacketType 입력
                     msg.add(1234,2345,11,22,33,44);
 
                 }else if(input == 2){
                     msg.SetPacketType(PacketType.LONG1STRING);
                     msg.add(str);
+
                 }else if(input == 3) {
                     msg.SetPacketType(PacketType.NOTHING);
                     break;
@@ -51,11 +55,11 @@ public class TcpClient {
 
                 else continue;
 
-                byte[] data = msg.Finish(); //입력 종료
+                msg.Finish_sendPacket(os); //입력 종료
 
-                os.write(data);
+                /* os.write(data);
 
-                os.flush();
+                os.flush();*/
 
                 System.out.println( "[데이터 전송 완료]");
             }
