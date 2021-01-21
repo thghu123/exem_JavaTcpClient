@@ -7,9 +7,9 @@ public class Protocol {
 
     public Packet receivePacket(InputStream is) throws IOException { //패킷 받는 메서드. 받는 기능만 있을 것
         Packet packet = null; //다형성으로 오버라이드된 객체 사용 가능
-        int type = is.read(); //예외처리
+        int packetType = is.read(); //예외처리
 
-        switch(type) {
+        switch(packetType) {
             case PacketType.INT2LONG4:
                 byte[] bytes = new byte[40];
                 while (is.read(bytes) == -1) break; //이게 if문과 같은 건지, while을 탈출하면 뒤가 진행되는지

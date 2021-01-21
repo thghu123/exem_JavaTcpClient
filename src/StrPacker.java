@@ -9,8 +9,7 @@ public class StrPacker implements Packet{
     private String str;
 
     public StrPacker(long length, String str){
-        //this.packetType = PacketType.LONG1STRING;
-        this.packetType = 1;
+        this.packetType = PacketType.LONG1STRING;
         this.length = length;
         this.str = str;
     } // 멤버 값만 입력
