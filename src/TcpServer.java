@@ -27,13 +27,17 @@ public class TcpServer {
                 //byte[] bytes = null;
                 is = socket.getInputStream();
                 byte[] bytes = new byte[1024]; //잘려서 가져오게된다.
+                UnPacker unPacker = new UnPacker();
 
             while(true) {
+
+                //여기서 일단 Packer에 넘겨주어서 처리
+                unPacker.show(is);
 
                 int readByteCount = is.read(bytes); //bytes에 읽어온 값 입력, int형인 이유는 -1 반환을 위함
                 //성공 시 읽은 바이트 수 반환, 오류시 -1 반환
 
-                PacketUnpacker msg = new PacketUnpacker(bytes); //할당 후 데이터 값 입력
+                PacketPacker msg = new PacketPacker(bytes); //할당 후 데이터 값 입력
             
                 System.out.println("[읽어온 바이트 수: ]"+readByteCount);
 

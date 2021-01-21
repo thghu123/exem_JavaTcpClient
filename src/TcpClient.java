@@ -13,7 +13,7 @@ public class TcpClient {
 
     public static void main(String[] args) {
 
-        String str = "문자열 전송 테스트를 위한 메세지";
+        String str = "string"; //len = 6
 
         Scanner sc = null;
         Socket socket = null;
@@ -30,32 +30,41 @@ public class TcpClient {
 
             OutputStream os = socket.getOutputStream();
 
+            UnPacker unPacker = new UnPacker();
+
             // ===4byte Int 2개, 8 byte Long 4개===
             while(true){
 
                 PacketPacker msg = new PacketPacker();
+                Packet packet;
 
                 System.out.println("1: NumPacket, 2:StrPacket, 3: exit");
                 sc = new Scanner(System.in);
                 int input = sc.nextInt();
 
-                if(input == 1){
 
-                    msg.SetPacketType(PacketType.INT2LONG4); // PacketType 입력
-                    msg.add(1234,2345,11,22,33,44);
+                if(input == 1){
+                    packet = new NumPacker(1,2,3,4,5,6);
+
+                    //기능을 묶은 인터페이스 상속 객체 활용
+                    //msg.SetPacketType(PacketType.INT2LONG4); // PacketType 입력
+                    //msg.add(1234,2345,11,22,33,44);
 
                 }else if(input == 2){
-                    msg.SetPacketType(PacketType.LONG1STRING);
-                    msg.add(str);
+                    packet = new StrPacker(str.length(),str);
+
+                    //msg.SetPacketType(PacketType.LONG1STRING);
+                    //msg.add(str);
 
                 }else if(input == 3) {
-                    msg.SetPacketType(PacketType.NOTHING);
+                    //msg.SetPacketType(PacketType.NOTHING);
                     break;
-                }
+                }else continue;
 
-                else continue;
+                //send 부 수정
+                unPacker.send(os,packet);
 
-                msg.Finish_sendPacket(os); //입력 종료
+                //msg.Finish_sendPacket(os); //입력 종료
 
                 /* os.write(data);
 
