@@ -1,5 +1,5 @@
-import java.io.IOException;
-import java.io.OutputStream;
+/*import java.io.IOException;
+import java.io.OutputStream;*/
 import java.nio.ByteBuffer;
 
 public class NumPacker implements Packet {
@@ -25,8 +25,7 @@ public class NumPacker implements Packet {
 
     @Override
     public byte[] toBytes() {
-        //요청할 경우에 길이에 맞게 할당을 진행하고, 값을 입력한다.
-        byte[] data = {};
+        //요청할 경우에 길이에 맞게 할당 후 타입과 값을 입력
         ByteBuffer buffer = ByteBuffer.allocate(1+40);
 
         buffer.put(packetType);
@@ -37,16 +36,7 @@ public class NumPacker implements Packet {
         buffer.putLong(lVal3);
         buffer.putLong(lVal4);
 
-        data = buffer.array();
-        buffer.flip();
-        return data;
-    }
-
-    @Override
-    public void send(OutputStream os, Packet packet) throws IOException {
-        byte[] bytes = packet.toBytes();
-        os.write(bytes);
-        os.flush();
+        return buffer.array();
     }
 
     @Override
@@ -59,8 +49,15 @@ public class NumPacker implements Packet {
                 ", lVal2:" + lVal2 +
                 ", lVal3:" + lVal3 +
                 ", lVal4:" + lVal4 +
-                '}';
+                '\n';
     }
 
 
 }
+
+/*    @Override
+    public void send(OutputStream os, Packet packet) throws IOException {
+        byte[] bytes = packet.toBytes();
+        os.write(bytes);
+        os.flush();
+    }*/
