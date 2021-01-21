@@ -1,11 +1,8 @@
 /* 목적 : 데이터를 Byte로 변환하고, 프로토콜을 통해 메세지를 구분하는 예제*/
 
 import java.io.IOException;
-
 import java.io.OutputStream;
-
 import java.net.InetSocketAddress;
-
 import java.net.Socket;
 import java.util.Scanner;
 
