@@ -22,33 +22,13 @@ public class PacketPacker {
         buffer.clear();
     }
 
-    public PacketPacker(byte[] data){ //들어온 데이터값의 길이 만큼 생성하고 data 넣어줌줌        buffer = ByteBuffer.allocate(data.length);
+    public PacketPacker(byte[] data){ //들어온 데이터값의 길이 만큼 생성하고 data 넣어줌줌
+        buffer = ByteBuffer.allocate(data.length);//       buffer = ByteBuffer.allocate(data.length);
         buffer.clear();
         buffer = ByteBuffer.wrap(data); // Byte Array를 ByteBuffer로  Wrapping
     }
 
-    public byte[] Finish(){
-
-        offset = buffer.position(); // 마지막 포인터 위치 offset 기억
-        byte[] data = {};
-
-        if(buffer.hasArray()){ // Array 값이 존재하는 경우에만
-            data = buffer.array();
-        } // 데이터 안에 쌓인 버퍼 입력됨.
-
-        byte[] result = new byte[offset];
-        //받은 데이터 값만큼 offset만큼 byte 할당, 값을 2곳에 복사하고 있는 것.
-
-        System.arraycopy(data, 0, result, 0, offset); // offset만큼 복사한다
-
-        //byte[] 형태의 데이터를 자르거나 연접하기 위해 사용하는 메서드
-        //param : 복사하고자하는 소스, Read 시작부, 복사할 대상, wrtie 시작부, 데이터 길이
-
-        buffer.flip();  //buffer의 포지션을 0으로 이동
-        return result;
-    }
-
-    public void Finish_sendPacket(OutputStream os) throws IOException {
+    public void Finish(OutputStream os) throws IOException {
 
         offset = buffer.position(); // 마지막 포인터 위치 offset 기억
         byte[] data = {};
@@ -62,7 +42,6 @@ public class PacketPacker {
         buffer.flip();  //buffer의 포지션을 0으로 이동
 
     }
-
 
     public void SetPacketType(byte PacketType){
         buffer.put(PacketType);
@@ -99,24 +78,45 @@ public class PacketPacker {
     }
 
     //====================출력부======================
-
-    public ByteBuffer getBuffer(){
-        return buffer;
+    public byte getPacketType(){
+        return buffer.get();
     }
 
     public int getInt(){
         return buffer.getInt();
     }
 
-    public long getLong(){ return buffer.getLong(); }
+    public long getLong(){
+        return buffer.getLong();
+    }
+
 
     public String getString(){
-        int len = buffer.getInt(); //먼저 String의 길이 환산
-        byte[] temp = new byte[len]; // 할당
+        long len = buffer.getLong();
+        System.out.println("문자열 길이 : "+(int)len);
+        byte[] temp = new byte[(int)len];
 
-        buffer.get(temp); //버퍼로 부터 받아온 값을 temp에 사이즈 만큼 읽어온다.
+        buffer.get(temp);
         String result = new String(temp);
         return result;
+    }
+
+    public void printINT2LONG4(){
+        System.out.println("int 1 : "+buffer.getInt());
+        System.out.println("int 2 : "+buffer.getInt());
+        System.out.println("long 1 : "+buffer.getLong());
+        System.out.println("long 2 : "+buffer.getLong());
+        System.out.println("long 3 : "+buffer.getLong());
+        System.out.println("long 4 : "+buffer.getLong());
+    }
+    public void printLONG1STRING() {
+
+        //System.out.println("롱형 1개: " + buffer.getLong());
+        System.out.println("스트링 : " + getString());
+    }
+
+    public ByteBuffer getBuffer(){
+        return buffer;
     }
 
 }

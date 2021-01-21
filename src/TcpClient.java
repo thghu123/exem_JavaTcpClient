@@ -13,7 +13,7 @@ public class TcpClient {
 
     public static void main(String[] args) {
 
-        String str = "문자열 전송 테스트를 위한 메세지";
+        String str = "string"; //len = 6
 
         Scanner sc = null;
         Socket socket = null;
@@ -30,37 +30,30 @@ public class TcpClient {
 
             OutputStream os = socket.getOutputStream();
 
+            UnPacker unPacker = new UnPacker();
+
             // ===4byte Int 2개, 8 byte Long 4개===
             while(true){
 
                 PacketPacker msg = new PacketPacker();
+                Packet packet;
 
                 System.out.println("1: NumPacket, 2:StrPacket, 3: exit");
                 sc = new Scanner(System.in);
                 int input = sc.nextInt();
 
                 if(input == 1){
-
-                    msg.SetPacketType(PacketType.INT2LONG4); // PacketType 입력
-                    msg.add(1234,2345,11,22,33,44);
+                    packet = new NumPacker(1,2,3,4,5,6);
 
                 }else if(input == 2){
-                    msg.SetPacketType(PacketType.LONG1STRING);
-                    msg.add(str);
+                    packet = new StrPacker(str.length(),str);
 
-                }else if(input == 3) {
-                    msg.SetPacketType(PacketType.NOTHING);
-                    break;
-                }
-
+                }else if(input == 3) break;
                 else continue;
 
-                msg.Finish_sendPacket(os); //입력 종료
-
-                /* os.write(data);
-
-                os.flush();*/
-
+                //send 부 수정
+                packet.send(os, packet);
+                os.flush();
                 System.out.println( "[데이터 전송 완료]");
             }
 
