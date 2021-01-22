@@ -56,7 +56,8 @@ public class TcpClient {
 
                 //읽어온 패킷 화면에 보여주고 다시 보낸다
                 System.out.println("발신 패킷: " + sendPacket.toString());//왜 toString()??
-                protocol.sendPacket(os, sendPacket);
+                sendPacket.sendPacket(os);
+
                 //protocol안의 send를 이용
 
                 //에코해서 돌아온 값을 다시 받아 띄워준다

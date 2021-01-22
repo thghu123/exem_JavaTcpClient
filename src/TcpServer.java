@@ -52,7 +52,7 @@ public class TcpServer {
                 System.out.println(recvPacket);
 
                 //받아온 값을 다시 전송
-                protocol.sendPacket(os, recvPacket);
+                recvPacket.sendPacket(os);
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

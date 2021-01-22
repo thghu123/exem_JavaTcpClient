@@ -11,7 +11,7 @@ public class Protocol {
 
         switch(packetType) {
             case PacketType.INT2LONG4:
-                byte[] bytes = new byte[40];
+               /* byte[] bytes = new byte[40];
                 while (is.read(bytes) == -1) break; //이게 if문과 같은 건지, while을 탈출하면 뒤가 진행되는지
 
                 //값 멤버변수에 넣어주기. 40중 int형의 데이터를 0의 메모리 주소부터 크기만큼 bytes에 덮어씀.
@@ -21,12 +21,20 @@ public class Protocol {
                 long lVal2 = ByteBuffer.wrap(bytes).getLong(16);
                 long lVal3 = ByteBuffer.wrap(bytes).getLong(24);
                 long lVal4 = ByteBuffer.wrap(bytes).getLong(32);
-
+                */
+                packet = new NumPacker();
+                packet.setPacket(is);
                 //넘버 패킷 생성자로 초기화하고 리턴
-                packet = new NumPacker(iVal1, iVal2, lVal1, lVal2, lVal3, lVal4);
+
+                //packet = new NumPacker(iVal1, iVal2, lVal1, lVal2, lVal3, lVal4);
                 break;
 
             case PacketType.LONG1STRING:
+
+                packet = new StrPacker();
+                packet.setPacket(is);
+/*
+
                 // long먼저 할당 받은 뒤 len 받고 그 길이만큼 할당, 한번에 읽어오는 법?
                 byte[] lengthBytes = new byte[8];
                 // 덮어 씌울 값, 시작값, 받아올 길이 지정해서 read해오기
@@ -45,6 +53,7 @@ public class Protocol {
 
                 //바이트 형을 String으로 변환 시 toString의 경우 non-primiritive 타입이 가지는 필드, 메서드 없어
                 //byte 안의 요소를 다루는 것이 아닌 배열 자체를 취급합니다. 범위 초과 유도, 문자열 변환에는 new String()을 사용
+*/
 
                 break;
 
@@ -57,12 +66,8 @@ public class Protocol {
 
     }
 
-        public void sendPacket(OutputStream os, Packet packet) throws IOException {
-        //packet을 받고 그안의 tobyte로 변환하여, os로 send, write 하자
-            byte[] bytes = packet.toBytes();
-            os.write(bytes);
 
-        }
+
 
     }
 
