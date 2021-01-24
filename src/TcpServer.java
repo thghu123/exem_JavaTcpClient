@@ -12,7 +12,6 @@ public class TcpServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         Socket socket = null;
-
         InputStream is = null;
         OutputStream os = null;
 
@@ -45,7 +44,7 @@ public class TcpServer {
             if (os != null) os.close();
 
             try{
-                socket.close();
+                if(socket!=null)socket.close();
             }catch(IOException ioe){
                 ioe.printStackTrace();
             }

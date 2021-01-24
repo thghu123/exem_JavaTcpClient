@@ -1,4 +1,6 @@
-/* 목적 : 데이터를 Byte로 변환하고, 프로토콜을 통해 메세지를 구분하는 예제*/
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +10,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.Scanner;
 
-public class TcpClient {
+public class TcpClient_ver1  {
 
     private static final String ADDRESS = "localhost";
     private static final int PORT = 5002;
@@ -33,6 +35,8 @@ public class TcpClient {
             while (true) {
                 Packet sendPacket;
 
+                //여기서 부터 마구잡이로 보낸다.
+
                 System.out.println("1: NumPacket, 2:StrPacket, 3: exit");
                 sc = new Scanner(System.in);
                 int input = sc.nextInt();
@@ -54,11 +58,11 @@ public class TcpClient {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
-            if (sc != null ) sc.close();
-            if (os != null) os.close();
-            if (is != null) is.close();
             try{
-                socket.close();
+                if (sc != null ) sc.close();
+                if (os != null) os.close();
+                if (is != null) is.close();
+                if(socket!=null)socket.close();
             }catch(IOException ioe) {ioe.printStackTrace();}
 
         }
